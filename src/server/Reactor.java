@@ -12,7 +12,7 @@ import java.nio.channels.ServerSocketChannel;
     接受和分发任务的类
  */
 public class Reactor {
-    public Reactor(int port) throws IOException {   //接受端口号
+    public Reactor(int port) throws IOException, ClassNotFoundException {   //接受端口号
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();  //开启服务端通道
         InetSocketAddress inetSocketAddress = new InetSocketAddress("127.0.0.1",port);  //本地地址和端口
         serverSocketChannel.bind(inetSocketAddress);    //绑定端口
