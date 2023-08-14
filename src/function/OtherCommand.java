@@ -8,7 +8,6 @@ import tool.ClassTool;
     其他指令
  */
 public class OtherCommand {
-
     public static String ping(){    //心跳指令
         return "PONG\n";
     }

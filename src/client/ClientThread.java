@@ -11,9 +11,11 @@ import java.nio.charset.CharsetDecoder;
  */
 public class ClientThread extends Thread {
     private SocketChannel socketChannel;    //创建通道
+    private static String hostName;   //本机地址
 
-    public ClientThread(SocketChannel socketChannel) {
+    public ClientThread(SocketChannel socketChannel, String hostName) {
         this.socketChannel = socketChannel; //接收通道以读取数据
+        this.hostName = hostName;   //用于打印地址
     }
 
     @Override
@@ -30,7 +32,7 @@ public class ClientThread extends Thread {
                     System.out.print(charsetDecoder.decode(byteBuffer));   //将读到内容解码后打印
                     byteBuffer.clear(); //清空缓冲区以便再次读取
                 }
-                System.out.print("127.0.0.1:9999>>");   //提示输入
+                System.out.print(hostName + ">>");   //提示输入
             } catch (IOException e) {
                 System.out.println("通道关闭");
                 break;

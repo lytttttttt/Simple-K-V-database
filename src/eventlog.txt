@@ -1,0 +1,5 @@
+Tue Aug 15 00:41:06 CST 2023 127.0.0.1>> help get
+Tue Aug 15 00:43:12 CST 2023 127.0.0.1>> get help
+Tue Aug 15 00:43:22 CST 2023 127.0.0.1>> exit
+Tue Aug 15 00:45:22 CST 2023 127.0.0.1>> get help
+Tue Aug 15 00:45:25 CST 2023 127.0.0.1>> help get
