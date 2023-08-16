@@ -1,10 +1,6 @@
 package server;
 
-import function.ArrayListCommand;
-import function.HashMapCommand;
-import function.LinkedListCommand;
-import function.OtherCommand;
-import tool.TxtTool;
+import function.*;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -21,6 +17,7 @@ import java.util.Date;
 public class Handler {
     private SocketChannel socketChannel;    //创建处理事件对应的通道
     private Charset charset;    //预备编码对象
+    private static ByteBuffer byteBuffer;  //创建buffer对象
 
     public Handler(SocketChannel socketChannel){
         this.socketChannel = socketChannel; //连接通道
@@ -28,7 +25,7 @@ public class Handler {
     }
 
     public void  readChannel(Selector selector) throws IOException, ClassNotFoundException {   //处理读取操作
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);  //使用buffer对象读或写数据至通道
+        byteBuffer = ByteBuffer.allocate(1024);  //使用buffer对象读或写数据至通道
         CharsetDecoder charsetDecoder = charset.newDecoder();   //获得解码器
         String message = "";    //创建空字符串接收内容
 
@@ -46,8 +43,6 @@ public class Handler {
         Date date = new Date(); //获取时间
         String log = date + " 127.0.0.1>> " + message + '\n'; //整合客户端发送内容
         System.out.print(log);    //打印客户端发送时间以及内容
-        TxtTool.eventLog(log);    //存储日志文件
-        TxtTool.binaryLog(log);   //存储二进制日志文件
 
 
         if("exit".equals(message)){ //接收到退出信息
@@ -69,6 +64,14 @@ public class Handler {
 
     public void messageHandler(String message) throws IOException, ClassNotFoundException {  //消息处理
         String[] command = message.split(" ");  //将接收到的指令按“ ”分开
+        if("sadd".equals(command[0])){                  //SADD [KEY] [MEMBERS]指令
+            String[] members = new String[command.length - 2];  //用于传入参数的数组
+            for(int i = 2; i < command.length; i++){    //历遍除了key的传入参数
+                members[i - 2] = command[i];    //将元素整合到数组中
+            }
+            sendMessage(KeyCommand.sadd(command[1], members));  //传入key，元素数组
+            return; //跳过其余判断
+        }
         int length = command.length;    //获取指令长度
 
         switch (length){    //通过长度判断是哪一类指令
@@ -77,6 +80,10 @@ public class Handler {
                     sendMessage(OtherCommand.help());
                 }else if("ping".equals(command[0])){    //PING指令
                     sendMessage(OtherCommand.ping());
+                }else if("save".equals(command[0])){    //SAVE指令
+                    sendMessage(OtherCommand.save());
+                }else if("flushdb".equals(command[0])){    //FLUSHDB指令
+                    sendMessage(OtherCommand.flushdb());
                 }else {
                     sendMessage("无效指令\n");
                 }
@@ -98,6 +105,10 @@ public class Handler {
                     sendMessage(LinkedListCommand.ldel(command[1]));
                 }else if("hdel".equals(command[0])) {   //HDEL [KEY]指令
                     sendMessage(ArrayListCommand.hdel(command[1]));
+                }else if("ddl".equals(command[0])) {    //DDL [KEY]指令
+                    sendMessage(KeyCommand.ddl(command[1]));
+                }else if("smembers".equals(command[0])){//SMEMBERS [KEY]指令
+                    sendMessage(KeyCommand.smembers(command[1]));
                 }else {
                     sendMessage("无效指令\n");
                 }
@@ -113,6 +124,12 @@ public class Handler {
                     sendMessage(ArrayListCommand.hget(command[1], command[2]));
                 }else if("hdel".equals(command[0])) {   //HDEL [KEY] [FIELD]指令
                     sendMessage(ArrayListCommand.hdel(command[1], command[2]));
+                }else if("sismember".equals(command[0])) {   //SISMEMBER [KEY] [MEMBER]指令
+                    sendMessage(KeyCommand.sismember(command[1], command[2]));
+                }else if("srem".equals(command[0])) {   //HDEL [KEY] [FIELD]指令
+                    sendMessage(KeyCommand.srem(command[1], command[2]));
+                }else if("expire".equals(command[0])) { //EXPIRE [KEY] [DELAY]指令
+                    sendMessage(KeyCommand.expire(command[1], command[2]));
                 }else{
                     sendMessage("无效指令\n");
                 }
@@ -136,4 +153,7 @@ public class Handler {
             socketChannel.write(charset.encode(message));   //将信息编码后发送
     }
 
+    public static ByteBuffer getByteBuffer(){
+        return byteBuffer;
+    }
 }

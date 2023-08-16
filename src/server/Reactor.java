@@ -2,6 +2,8 @@ package server;
 
 
 
+import function.OtherCommand;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
@@ -22,6 +24,7 @@ public class Reactor {
 
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT); //服务端接收通道以接收类型注册到选择器中
         System.out.println("服务端接收通道已开启");
+        OtherCommand.bgsave();  //后台自动保存
 
         new Accepter(selector);   //由Accept类处理连接
     }

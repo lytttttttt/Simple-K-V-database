@@ -68,5 +68,9 @@ public class HashMapCommand {
 
         open(); //重新加载hashMap
     }
+
+    public static HashMap<String, String> getHashMap() {
+        return hashMap; //获取map
+    }
 }
 

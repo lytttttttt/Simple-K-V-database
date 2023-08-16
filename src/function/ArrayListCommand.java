@@ -60,4 +60,5 @@ public class ArrayListCommand {
         }
         return "1\n";                   //删除成功
     }
+
 }
