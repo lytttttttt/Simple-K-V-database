@@ -1,6 +1,7 @@
 package server;
 
 import function.*;
+import tool.LogTool;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -9,7 +10,6 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.util.Date;
 
 /*
     处理连接后的事项
@@ -40,10 +40,7 @@ public class Handler {
             return; //退出事件处理
         }
 
-        Date date = new Date(); //获取时间
-        String log = date + " 127.0.0.1>> " + message + '\n'; //整合客户端发送内容
-        System.out.print(log);    //打印客户端发送时间以及内容
-
+        LogTool.infoOut(message);   //添加日志消息
 
         if("exit".equals(message)){ //接收到退出信息
             socketChannel.close();  //关闭线程
@@ -55,8 +52,7 @@ public class Handler {
         socketChannel.register(selector, SelectionKey.OP_READ);  //将通道重新以可读类型放入选择器中
 
         } catch (IOException e) {
-            Date date = new Date(); //获取时间
-            System.out.println(date + " 客户端强制退出");
+            LogTool.errorOut("客户端强制退出");
             HashMapCommand.save();  //保存map
             socketChannel.close();  //关闭连接
         }

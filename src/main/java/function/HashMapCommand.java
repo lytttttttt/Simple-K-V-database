@@ -24,7 +24,7 @@ public class HashMapCommand {
     }
 
     public static void open() throws IOException {   //预加载
-        bufferedReader = new BufferedReader(new FileReader("src\\hashmap.properties")); //获取文件读取对象
+        bufferedReader = new BufferedReader(new FileReader("src\\main\\java\\files\\hashmap.properties")); //获取文件读取对象
         properties = new Properties();  //创建Properties 对象
 
         String line = "";   //使用空字符串获取读到的内容
@@ -57,7 +57,7 @@ public class HashMapCommand {
     }
 
     public static void save() throws IOException { //客户端退出时保存map
-        fileOutputStream = new FileOutputStream("src\\hashmap.properties"); //借助FileOutputStream 写入内容
+        fileOutputStream = new FileOutputStream("src\\main\\java\\files\\hashmap.properties"); //借助FileOutputStream 写入内容
 
         Set<String> sets = hashMap.keySet();    //获取key 集合
         for(String set : sets){ //历遍key
@@ -69,8 +69,5 @@ public class HashMapCommand {
         open(); //重新加载hashMap
     }
 
-    public static HashMap<String, String> getHashMap() {
-        return hashMap; //获取map
-    }
 }
 
