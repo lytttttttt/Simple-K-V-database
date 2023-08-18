@@ -10,7 +10,7 @@ import java.io.IOException;
 public class PropertyTool {
 
     public int getPort() throws IOException {   //获取端口号的方法
-        BufferedReader br = new BufferedReader(new FileReader("src\\main\\java\\files\\colloate.properties")); //获取文件读取对象
+        BufferedReader br = new BufferedReader(new FileReader("src\\main\\resources\\colloate.properties")); //获取文件读取对象
         String line = "";   //使用空字符串获取读到的内容
         int port = 0;   //获取端口号以返回
         while ((line = br.readLine()) != null) { //循环读取
@@ -23,7 +23,7 @@ public class PropertyTool {
     }
 
     public String getHostname() throws IOException {   //获取地址的方法
-        BufferedReader br = new BufferedReader(new FileReader("src\\main\\java\\files\\colloate.properties")); //获取文件读取对象
+        BufferedReader br = new BufferedReader(new FileReader("src\\main\\resources\\colloate.properties")); //获取文件读取对象
         String line = "";   //使用空字符串获取读到的内容
         String hostname = "";   //获取地址以返回
         while ((line = br.readLine()) != null) { //循环读取

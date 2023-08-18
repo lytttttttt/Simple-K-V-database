@@ -10,6 +10,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.text.ParseException;
 
 /*
     处理连接后的事项
@@ -52,7 +53,7 @@ public class Handler {
         messageHandler(message);    //对接收消息进行处理
         socketChannel.register(selector, SelectionKey.OP_READ);  //将通道重新以可读类型放入选择器中
 
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             LogTool.errorOut("客户端强制退出");
             HashMapCommand.save();  //保存map
             KeyCommand.save();  //保存map
@@ -60,7 +61,7 @@ public class Handler {
         }
     }
 
-    public void messageHandler(String message) throws IOException, ClassNotFoundException {  //消息处理
+    public void messageHandler(String message) throws IOException, ClassNotFoundException, ParseException {  //消息处理
         String[] command = message.split(" ");  //将接收到的指令按“ ”分开
         int length = command.length;    //获取指令长度
 

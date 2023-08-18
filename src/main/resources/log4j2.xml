@@ -7,7 +7,7 @@
 
     <!--利用${name}集中管理路径-->
     <properties>
-        <property name="LOG_HOME">./src/main/java/files</property>
+        <property name="LOG_HOME">./files</property>
     </properties>
 
     <!--日志处理-->

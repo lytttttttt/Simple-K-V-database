@@ -10,8 +10,8 @@ import java.util.Set;
  */
 public class BinaryTool {
     private static ArrayList<String> list; //用于指向key 对应的ArrayList
-    private static File timeFile = new File("src\\main\\java\\files\\keytime.dat");
-    private static File mapFile = new File("src\\main\\java\\files\\keymap.dat");
+    private static File timeFile = new File(".\\files\\keytime.dat");   //创建key以及过期时间文件对象
+    private static File mapFile = new File(".\\files\\keymap.dat");     //创建key以及ArrayList文件对象
 
     static {
         if(!timeFile.exists()) {    //如果存放key时间的文件不存在
@@ -31,65 +31,65 @@ public class BinaryTool {
     }
 
     public static HashMap<String, String> getTime() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(timeFile);
-        HashMap<String, String> hashMap = new HashMap<>();  //创建集合,记录时间
-        String str = "";
-        int read = 0;
-        while((read = fileInputStream.read()) != -1){
-            str += (char)read;
-            if((char)read == '\n'){
-                String[] split = str.split("=");
-                hashMap.put(split[0], split[1]);
-                str = "";
+        FileInputStream fileInputStream = new FileInputStream(timeFile);   //得到字节输入对象
+        HashMap<String, String> hashMap = new HashMap<>();  //创建集合，存放数据后返回
+        String str = "";    //空字符接收内容
+        int read = 0;   //读取文件内容
+        while((read = fileInputStream.read()) != -1){   //读取文件直至退出
+            str += (char)read;  //拼接读取内容
+            if((char)read == '\n'){ //根据换行符区分key
+                String[] split = str.split("=");    //根据 = 分开key 和value
+                hashMap.put(split[0], split[1]);    //放入key 和value 到集合
+                str = "";   //置空字符串重新接收key 和value
             }
         }
-        return hashMap;
+        return hashMap;   //返回map
     }
 
     public static HashMap<String, ArrayList<String>> getMap() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(mapFile);
-        HashMap<String, ArrayList<String>> arrayList = new HashMap<>(); //创建集合,存放数据
-        String str = "";
-        int read = 0;
-        while((read = fileInputStream.read()) != -1){
-            str += (char)read;
-            if((char)read == '\n'){
-                list = new ArrayList<>();
-                String[] split = str.split(" ");
-                arrayList.put(split[0], list);
-                for (int i = 1; i < list.size(); i++) {
-                    list.add(split[i]);
+        FileInputStream fileInputStream = new FileInputStream(mapFile); //得到字节输入对象
+        HashMap<String, ArrayList<String>> arrayList = new HashMap<>(); //创建集合，存放数据后返回
+        String str = "";    //空字符接收内容
+        int read = 0;   //读取文件内容
+        while((read = fileInputStream.read()) != -1){   //读取文件直至退出
+            str += (char)read;  //拼接读取内容
+            if((char)read == '\n'){ //根据换行符区分key
+                list = new ArrayList<>();   //创建ArrayList 和key 对应，接收value
+                String[] split = str.split(" ");//根据空格分开key和list中的value
+                arrayList.put(split[0], list);  //放入key 和集合到map中
+                for (int i = 1; i < list.size(); i++) { //历遍value
+                    list.add(split[i]); //放入value
                 }
-                str = "";
+                str = "";   //置空以便读取下一个key 和value
             }
         }
-        return arrayList;
+        return arrayList;   //返回map
     }
 
-    public static void setTime(HashMap<String, String> hashMap) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(timeFile);
+    public static void setTime(HashMap<String, String> hashMap) throws IOException {    //存储key 以及过期时间
+        FileOutputStream fileOutputStream = new FileOutputStream(timeFile); //得到字节输出对象
 
-        Set<String> keys = hashMap.keySet();
-        for(String key: keys){
-            fileOutputStream.write(key.getBytes());
-            fileOutputStream.write("=".getBytes());
-            fileOutputStream.write(hashMap.get(key).getBytes());
-            fileOutputStream.write("\n".getBytes());
+        Set<String> keys = hashMap.keySet();  //得到key集合
+        for(String key: keys){  //历遍key
+            fileOutputStream.write(key.getBytes()); //写入key
+            fileOutputStream.write("=".getBytes()); //根据 = 分割key 和value
+            fileOutputStream.write(hashMap.get(key).getBytes());    //写入key 对应的value
+            fileOutputStream.write("\n".getBytes());    //换行输入下一个key
         }
 
     }
 
-    public static void setMap(HashMap<String, ArrayList<String>> arrayList) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(mapFile);
+    public static void setMap(HashMap<String, ArrayList<String>> arrayList) throws IOException {    //存取key 以及ArrayList
+        FileOutputStream fileOutputStream = new FileOutputStream(mapFile);  //得到字节输出对象
 
-        Set<String> keys = arrayList.keySet();
-        for(String key: keys){
-            list = arrayList.get(key);
-            fileOutputStream.write(key.getBytes());
-            for (int i = 0; i < list.size(); i++) {
-                fileOutputStream.write((" " + list.get(i)).getBytes());
+        Set<String> keys = arrayList.keySet();  //得到key集合
+        for(String key: keys){  //历遍key
+            list = arrayList.get(key);  //获取key对应的ArrayList
+            fileOutputStream.write(key.getBytes()); //写入key
+            for (int i = 0; i < list.size(); i++) { //历遍list的值
+                fileOutputStream.write((" " + list.get(i)).getBytes()); //以空格分割value
             }
-            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.write("\n".getBytes());    //换行输入下一个key
         }
     }
 }

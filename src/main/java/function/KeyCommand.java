@@ -3,6 +3,7 @@ package function;
 import tool.BinaryTool;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -23,10 +24,17 @@ public class KeyCommand {
         }
     }
 
-    public static String expire(String key,String delay){   //设置key 过期时间
+    public static String expire(String key,String delay) throws ParseException {   //设置key 过期时间
         if(arrayList.get(key) == null || hashMap.get(key) != null){
         return "0\n";   //key不存在,设置失败或者已设置过期时间
         }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  //设定输出格式
+        if(hashMap.get(key) != null && new Date().compareTo(dateFormat.parse(hashMap.get(key))) > 0){   //比较当前时间和key时间
+            hashMap.remove(key);
+            arrayList.remove(key);  //移除两个map的key
+            return "0\n";   //key已经过期
+        }
+
         int second = Integer.parseInt(delay);  //将时长转为整形，用于传入或计算
         new Timer().schedule(new TimerTask() {  //创建Timer对象，借助schedule完成定时任务
             @Override
@@ -39,15 +47,20 @@ public class KeyCommand {
         Calendar calendar = Calendar.getInstance(); //获取calendar对象以对日期进行计算
         calendar.add(Calendar.SECOND, second);  //传入要增加的秒数
         Date endDate = calendar.getTime();      //得到过期时间
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  //设定输出格式
         hashMap.put(key, dateFormat.format(endDate));   //将过期时间转为字符串放入map
 
         return "1\n";   //设置成功
     }
 
-    public static String ddl(String key){   //获取key 过期时间
+    public static String ddl(String key) throws ParseException {   //获取key 过期时间
         if(arrayList.get(key) == null || hashMap.get(key) == null){
             return "null\n";   //key不存在
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  //设定输出格式
+        if(hashMap.get(key) != null && new Date().compareTo(dateFormat.parse(hashMap.get(key))) > 0){   //比较当前时间和key时间
+            hashMap.remove(key);
+            arrayList.remove(key);  //移除两个map的key
+            return "0\n";   //key已经过期
         }
 
         String end = hashMap.get(key); //获取过期时间字符串
