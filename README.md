@@ -12,7 +12,7 @@
 
 ## 二、环境依赖
 
-![External Libraries](.\images\External Libraries.png)
+![External Libraries](https://github.com/lytttttttt/Simple-K-V-database/blob/master/images/External%20Libraries.png?raw=true)
 
 项目所使用的jdk版本为:1.8
 根据日志实现的需求，还需要导入slf4j和log4j相关库(如图)
@@ -29,17 +29,17 @@
 
 ——src/main	  源代码	
 
-​				——java			代码文件
+——————java			代码文件
 
-​						——client		 客户端相关类
+————————client		 客户端相关类
 
-​						——function	指令实现类
+————————function	指令实现类
 
-​						——server		服务端相关类
+————————server		服务端相关类
 
-​						——tool			文件，反射相关类
+————————tool			文件，反射相关类
 
-​				——resources		配置文件夹
+——————resources		配置文件夹
 
 ——KV.iml		  项目标识文件
 
@@ -65,17 +65,17 @@ public class AClient {...}
 
 运行后，可以在客户端运行界面输入内容，
 
-![Client](.\images\Client.png)
+![Client](https://github.com/lytttttttt/Simple-K-V-database/blob/master/images/Client.png?raw=true)
 
 服务端将会接收并显示内容，同时发送请求相应内容显示在客户端运行页面。
 
-![Server](.\images\Server.png)
+![Server](https://github.com/lytttttttt/Simple-K-V-database/blob/master/images/Server.png?raw=true)
 
 如果您是第一次使用，可以通过输入help获取帮助指令，
 
 输入后，将会显示可输入指令在客户端运行界面。
 
-![help](.\images\help.png)
+![help](https://github.com/lytttttttt/Simple-K-V-database/blob/master/images/help.png?raw=true)
 
 随后，您便可以根据指令按照需要输入，
 
@@ -104,4 +104,5 @@ public class AClient {...}
 5. 简单日志实现
 6. 实现数据二进制保存
 7. 文件相关完善及说明文档提交
+8. 说明文件图片加载
 
