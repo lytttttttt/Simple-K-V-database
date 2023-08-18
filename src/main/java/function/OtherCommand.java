@@ -30,6 +30,7 @@ public class OtherCommand {
 
     public static String save() throws IOException {  //手动保存
         HashMapCommand.save();  //保存map
+        KeyCommand.save();  //保存map
         return "1\n";
     }
 
@@ -43,7 +44,7 @@ public class OtherCommand {
                     e.printStackTrace();
                 }
             }
-        }, 0, 6000);   //方法被调用时执行一次保存，之后每隔6000毫秒执行一次
+        }, 0, 10000);   //方法被调用时执行一次保存，之后每隔10000毫秒执行一次
     }
 
     public static String flushdb(){   //清空缓冲区

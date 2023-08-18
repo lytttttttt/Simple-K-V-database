@@ -45,6 +45,7 @@ public class Handler {
         if("exit".equals(message)){ //接收到退出信息
             socketChannel.close();  //关闭线程
             HashMapCommand.save(); //保存到map
+            KeyCommand.save();  //保存map
             return; //退出事件处理
         }
 
@@ -54,13 +55,16 @@ public class Handler {
         } catch (IOException e) {
             LogTool.errorOut("客户端强制退出");
             HashMapCommand.save();  //保存map
+            KeyCommand.save();  //保存map
             socketChannel.close();  //关闭连接
         }
     }
 
     public void messageHandler(String message) throws IOException, ClassNotFoundException {  //消息处理
         String[] command = message.split(" ");  //将接收到的指令按“ ”分开
-        if("sadd".equals(command[0])){                  //SADD [KEY] [MEMBERS]指令
+        int length = command.length;    //获取指令长度
+
+        if("sadd".equals(command[0]) && length > 1){                  //SADD [KEY] [MEMBERS]指令
             String[] members = new String[command.length - 2];  //用于传入参数的数组
             for(int i = 2; i < command.length; i++){    //历遍除了key的传入参数
                 members[i - 2] = command[i];    //将元素整合到数组中
@@ -68,7 +72,6 @@ public class Handler {
             sendMessage(KeyCommand.sadd(command[1], members));  //传入key，元素数组
             return; //跳过其余判断
         }
-        int length = command.length;    //获取指令长度
 
         switch (length){    //通过长度判断是哪一类指令
             case 1:

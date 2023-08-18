@@ -29,8 +29,10 @@ public class ClassTool {
             for(Method method : methods){   //历遍方法数组
                 if(!Modifier.isPublic(method.getModifiers()))
                     continue;   //不返回非public方法
-                if(("save".equals(method.getName()) || "open".equals(method.getName()) || "getHashMap".equals(method.getName())) && "function.HashMapCommand".equals(className))
+                if(("save".equals(method.getName()) || "open".equals(method.getName())) && "function.HashMapCommand".equals(className))
                     continue;   //不返回hashMap指令的open,save,getHashMap方法
+                if("save".equals(method.getName()) && "function.KeyCommand".equals(className))
+                    continue;   //不返回KeyCommand指令的save方法
                 if("bgsave".equals(method.getName()))
                     continue;   //不返回后台保存方法
 
@@ -57,8 +59,10 @@ public class ClassTool {
                     if(method.getName().equals(commandName)){
                         if(!Modifier.isPublic(method.getModifiers()))
                             continue;   //不返回非public方法
-                        if(("save".equals(method.getName()) || "open".equals(method.getName()) || "getHashMap".equals(method.getName())) && "function.HashMapCommand".equals(className))
+                        if(("save".equals(method.getName()) || "open".equals(method.getName())) && "function.HashMapCommand".equals(className))
                             continue;   //不返回hashMap指令的open,save,getHashMap方法
+                        if("save".equals(method.getName()) && "function.KeyCommand".equals(className))
+                            continue;   //不返回KeyCommand指令的save方法
                         if("bgsave".equals(method.getName()))
                             continue;   //不返回后台保存方法
 

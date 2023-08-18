@@ -1,5 +1,8 @@
 package function;
 
+import tool.BinaryTool;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -12,9 +15,12 @@ public class KeyCommand {
     private static ArrayList<String> list; //用于指向key 对应的ArrayList
 
     static {    //使用静态代码块提前加载集合
-//        hashMap = HashMapCommand.getHashMap();  //获取HashMapCommand的map
-        arrayList = new HashMap<>();    //创建map
-        hashMap = new HashMap<>();
+        try {
+            hashMap = BinaryTool.getTime();
+            arrayList = BinaryTool.getMap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String expire(String key,String delay){   //设置key 过期时间
@@ -120,5 +126,10 @@ public class KeyCommand {
         }
 
         return "0\n";   //元素不存在，删除失败
+    }
+
+    public static void save() throws IOException {
+        BinaryTool.setTime(hashMap);
+        BinaryTool.setMap(arrayList);
     }
 }

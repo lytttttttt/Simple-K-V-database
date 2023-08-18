@@ -39,13 +39,6 @@
             <version>2.9.1</version>
         </dependency>
 
-        <!--异步日志依赖-->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>3.3.4</version>
-        </dependency>
-
     </dependencies>
 
     <build>
