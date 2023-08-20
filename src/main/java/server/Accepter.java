@@ -17,6 +17,7 @@ public class Accepter {
 
         while (true) {    //持续历遍选择器
             selector.select();  //查询出已就绪通道
+
             Set<SelectionKey> selectionKeys = selector.selectedKeys();  //获取选择键集合
 
             Iterator<SelectionKey> iterator = selectionKeys.iterator(); //通过迭代器历遍
@@ -24,10 +25,9 @@ public class Accepter {
                 SelectionKey selectionKey = iterator.next();    //获取选择键
 
                 if (selectionKey.isAcceptable()) {    //选择键是 接收 类型
-
-                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel)selectionKey.channel();    //得到接收用通道
+                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();    //得到接收用通道
                     SocketChannel clientChannel = serverSocketChannel.accept(); //获取接收到的客户端通道
-                    if(clientChannel == null)   //如果接收了已存在的通道将会返回null
+                    if (clientChannel == null)   //如果接收了已存在的通道将会返回null
                         continue;
                     clientChannel.configureBlocking(false); //将通道设置为非阻塞
                     clientChannel.register(selector, SelectionKey.OP_READ); //以可读类型放入选择器中
@@ -35,11 +35,12 @@ public class Accepter {
 
                 } else if (selectionKey.isReadable()) {    //选择键是 可读 类型
 
-                    SocketChannel clientChannel = (SocketChannel)selectionKey.channel();    //获取客户端通道
+                    SocketChannel clientChannel = (SocketChannel) selectionKey.channel();    //获取客户端通道
                     Handler handler = clientHandler.get(clientChannel); //借由通道获取事件处理
                     handler.readChannel(selector); //处理读取操作
 
                 }
+
             }
 
         }

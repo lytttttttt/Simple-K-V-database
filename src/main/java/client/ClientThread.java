@@ -11,7 +11,7 @@ import java.nio.charset.CharsetDecoder;
  */
 public class ClientThread extends Thread {
     private SocketChannel socketChannel;    //创建通道
-    private static String hostName;   //本机地址
+    private String hostName;   //本机地址
 
     public ClientThread(SocketChannel socketChannel, String hostName) {
         this.socketChannel = socketChannel; //接收通道以读取数据
@@ -25,19 +25,17 @@ public class ClientThread extends Thread {
         CharsetDecoder charsetDecoder = charset.newDecoder();   //获得解码器
 
         while (true) {
-
             try {
                 if (socketChannel.isOpen() && (socketChannel.read(byteBuffer) > 0)) {    //读取通道内容至byteBuffer
                     byteBuffer.flip();  //将buffer转换为读模式
                     System.out.print(charsetDecoder.decode(byteBuffer));   //将读到内容解码后打印
                     byteBuffer.clear(); //清空缓冲区以便再次读取
+                    System.out.print(hostName + ">>");   //提示输入
                 }
-                System.out.print(hostName + ">>");   //提示输入
-            } catch (IOException e) {
-                System.out.println("通道关闭");
-                break;
+            } catch (IOException e) {   //服务端通道强制关闭
+                break;  //通道关闭，退出
             }
         }
-
     }
+
 }
