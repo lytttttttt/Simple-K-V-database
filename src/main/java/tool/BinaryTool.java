@@ -57,7 +57,7 @@ public class BinaryTool {
                 list = new ArrayList<>();   //创建ArrayList 和key 对应，接收value
                 String[] split = str.split(" ");//根据空格分开key和list中的value
                 arrayList.put(split[0], list);  //放入key 和集合到map中
-                for (int i = 1; i < list.size(); i++) { //历遍value
+                for (int i = 1; i < split.length - 1; i++) { //历遍value
                     list.add(split[i]); //放入value
                 }
                 str = "";   //置空以便读取下一个key 和value
@@ -74,7 +74,7 @@ public class BinaryTool {
             fileOutputStream.write(key.getBytes()); //写入key
             fileOutputStream.write("=".getBytes()); //根据 = 分割key 和value
             fileOutputStream.write(hashMap.get(key).getBytes());    //写入key 对应的value
-            fileOutputStream.write("\n".getBytes());    //换行输入下一个key
+            fileOutputStream.write(" \n".getBytes());    //换行输入下一个key
         }
 
     }
@@ -89,7 +89,7 @@ public class BinaryTool {
             for (int i = 0; i < list.size(); i++) { //历遍list的值
                 fileOutputStream.write((" " + list.get(i)).getBytes()); //以空格分割value
             }
-            fileOutputStream.write("\n".getBytes());    //换行输入下一个key
+            fileOutputStream.write(" \n".getBytes());    //换行输入下一个key
         }
     }
 }

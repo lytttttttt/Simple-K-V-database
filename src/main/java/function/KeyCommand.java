@@ -122,6 +122,8 @@ public class KeyCommand {
     }
 
     public static String srem(String key, String member){   //删除key 中的成员
+       Boolean flag = false;
+
         if(arrayList.get(key) == null){ //判断key 对应的集合是否已有
             return "null\n";    //集合不存在
         }else {
@@ -132,13 +134,15 @@ public class KeyCommand {
         while(iterator.hasNext()){  //通过迭代器遍历集合
             String value = iterator.next(); //获取成员
             if(value.equals(member)){   //判断集合成员是否与传入元素相同
-                list.remove(member);    //删除氧元素
-                return "1\n";   //删除失败
+                iterator.remove();      //删除元素
+                flag = true;            //删除成功
             }
-
         }
 
-        return "0\n";   //元素不存在，删除失败
+        if(flag)
+            return "1\n";   //元素存在，删除成功
+        else
+            return "0\n";   //元素不存在，删除失败
     }
 
     public static void save() throws IOException {
